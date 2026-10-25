@@ -1,43 +1,48 @@
-# Marketing Performance for Claude Code: operating instructions
+# Marketing Performance for Claude Code
 
-This file is the brain. Claude Code reads it at the start of every session. It says who this is for, how work gets done, and the one right way to do each recurring job.
+A campaign performance record system for one operator. Read data from scripts/performance.mjs before answering. Never invent prices, conversions, attribution, evidence or an operator's approval.
 
-## Who this is for
+Run the matching recipe in .claude/commands/. Every CLI command accepts --json. Read docs/cli.md for arguments and calculations. Ambiguous matches list candidates and exit 1. Actor names are attribution, not authentication.
 
-- **Business:** [YOUR BUSINESS]
-- **Operator:** [YOUR NAME], [your role]
-- **What matters most:** [the one or two outcomes you care about]
+The five weekly rituals are reconcile results, review pacing, review efficiency, assign exceptions and draft the review. /weekly-review combines pacing, attention and compliance. Import aggregate campaign-day exports only. Read the replacement guide before importing. Preserve original exports privately. Use a dry run first. Repeat imports replace matching values with an audit trail; they do not add amounts or delete absent rows.
 
-Fill this in once. A worker with context knows. A worker without it guesses.
+Never combine currencies. Never describe reported conversions as unique customers or reported revenue as audited profit. No ad budget or status command here changes an advertising account. They update local records only. Never send, activate campaigns, connect external systems, publish or delete records from these recipes. Drafts stay in drafts/.
 
-## How to work
+- /workspaces: node scripts/performance.mjs workspaces
+- /campaigns: node scripts/performance.mjs campaigns
+- /performance: node scripts/performance.mjs performance
+- /pacing: node scripts/performance.mjs pacing
+- /efficiency: node scripts/performance.mjs efficiency
+- /channel-summary: node scripts/performance.mjs channel-summary
+- /stale-feeds: node scripts/performance.mjs stale-feeds
+- /zero-return: node scripts/performance.mjs zero-return
+- /data-quality: node scripts/performance.mjs data-quality
+- /attention: node scripts/performance.mjs attention
+- /compliance: node scripts/performance.mjs compliance
+- /claims: node scripts/performance.mjs claims
+- /imports: node scripts/performance.mjs imports
+- /activity: node scripts/performance.mjs activity
+- /campaign: node scripts/performance.mjs campaign
+- /weekly-review: node scripts/performance.mjs weekly-review
+- /add-workspace: node scripts/performance.mjs add-workspace
+- /add-campaign: node scripts/performance.mjs add-campaign
+- /set-budget: node scripts/performance.mjs set-budget
+- /set-flight: node scripts/performance.mjs set-flight
+- /assign: node scripts/performance.mjs assign
+- /set-state: node scripts/performance.mjs set-state
+- /record-day: node scripts/performance.mjs record-day
+- /add-claim: node scripts/performance.mjs add-claim
+- /review-claim: node scripts/performance.mjs review-claim
+- /review-data: node scripts/performance.mjs review-data
+- /log: node scripts/performance.mjs log
+- /draft-review: node scripts/performance.mjs draft-review
+- /draft-claim: node scripts/performance.mjs draft-claim
+- /import: node scripts/performance.mjs import salesforce-marketing-cloud-intelligence
+- /export: node scripts/performance.mjs export
+- /customise: add and test a numbered migration, then apply within the operator's authorised change.
+- /new-view: add a read-only report using views.json.
 
-1. **Take a brief, not a script.** The operator describes the outcome. You run the right command and present the answer.
-2. **Read before you write.** Before drafting anything about a record, read its full history first.
-3. **Plain language.** Short sentences. No filler. Numbers in tables.
-4. **Silent success, loud problems.** No play-by-play. Say what broke and what you did about it.
-5. **Stop at the line.** Anything that sends, deletes, or faces a customer waits for a yes in this session.
+Use synthetic records for testing. Never seed a working database. Read docs/compliance.md before explaining record checks. The checks flag missing evidence and review dates; they do not establish legal compliance. Local embedded mode is single-process. Shared deployments require authentication, least-privilege database roles, backup restore tests and access review.
 
-## Routing table: one right way for each recurring job
+Omni by Enterprise DNA installs, customises and runs this system. https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=salesforce-marketing-cloud-intelligence&utm_source=github&utm_medium=instructions
 
-| When the operator asks for... | Use this |
-|---|---|
-| <!-- TODO(author): one row per slash command --> | `/...` |
-
-If an ask fits nothing here, run the CLI directly (`npm run <cli> -- --help`) and then propose a new command for it.
-
-## Hard rules
-
-- Never send email or messages from here. Draft to `drafts/`, a person sends.
-- Never delete records without an explicit yes in this session. Prefer marking closed or archived.
-- Never invent a record. If a name is ambiguous, list the candidates and ask.
-- The database is the source of truth. If the answer is not in it, say so.
-
-## Where things live
-
-- `scripts/` the CLI. `scripts/lib/db.mjs` picks `DATABASE_URL` (Postgres, Supabase) or the embedded database in `.data/`.
-- `supabase/migrations/` the schema, plain SQL. `npm run migrate` applies it.
-- `.claude/commands/` the slash commands. Add one every time the same ask comes twice.
-- `docs/` the thesis and the guide for moving off Salesforce Marketing Cloud Intelligence.
-
-Built by Enterprise DNA. Installed and run for you as part of Omni: https://enterprisedna.co/omni/instead-of/salesforce-marketing-cloud-intelligence

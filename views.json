@@ -1,13 +1,38 @@
 [
   {
-    "name": "week",
-    "title": "This week",
-    "subtitle": "Marketing Performance for Claude Code: what needs attention, rendered by npm run view",
+    "name": "weekly-performance",
+    "title": "Weekly marketing performance",
+    "subtitle": "Reported conversions and revenue. Channel attribution can overlap. Currencies remain separate.",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Performance",
+        "sql": "select campaign,workspace,currency,spend,conversions,revenue,cpa,roas,latest_day from campaign_performance order by workspace,campaign"
+      },
+      {
+        "title": "Spend pacing",
+        "sql": "select campaign,currency,budget,spend,expected_spend,pace_variance,remaining,remaining_daily_budget from campaign_pacing order by currency,campaign"
+      },
+      {
+        "title": "Attention",
+        "sql": "select issue,campaign,owner,currency,amount from attention order by issue,campaign"
+      }
+    ]
+  },
+  {
+    "name": "evidence-review",
+    "title": "Evidence and data review",
+    "sections": [
+      {
+        "title": "Record checks",
+        "sql": "select * from compliance_findings order by rule,item"
+      },
+      {
+        "title": "Claims to review",
+        "sql": "select x.id,c.name as campaign,x.statement,x.evidence,x.review_due,x.reviewed_by from claims x join campaigns c on c.id=x.campaign_id order by x.created_at,x.id"
+      },
+      {
+        "title": "Import history",
+        "sql": "select i.id,w.name as workspace,i.source,i.file_hash,i.row_count,i.actor,i.created_at from imports i join workspaces w on w.id=i.workspace_id order by i.created_at,i.id"
       }
     ]
   }

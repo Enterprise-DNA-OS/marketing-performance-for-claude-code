@@ -1,115 +1,80 @@
-<h1 align="center">Marketing Performance for Claude Code</h1>
+# Marketing Performance for Claude Code
 
-<p align="center">
-  <strong>The open-source marketing performance desk that is just a database and Claude Code.</strong>
-</p>
+See which campaigns overspend, which results have gone stale and which return claims need evidence. An MIT-licensed database and command set for the weekly marketing performance meeting.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+| Do it yourself | We customise it | We run it for you |
+|---|---|---|
+| Free. Run the demo and import an aggregate campaign CSV. | Your measures, flight rules, reports, history, a web front end or a different stack. | Installed, connected and operated through Omni by Enterprise DNA. One setup fee, then a retainer. |
+| [Quick start](#quick-start) | [Get your version built](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=salesforce-marketing-cloud-intelligence&utm_source=github&utm_medium=customise) | [Book a call](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=salesforce-marketing-cloud-intelligence&utm_source=github&utm_medium=managed) |
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Salesforce Marketing Cloud Intelligence data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=salesforce-marketing-cloud-intelligence">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/salesforce-marketing-cloud-intelligence?utm_source=github&utm_medium=readme&utm_campaign=salesforce-marketing-cloud-intelligence">How it works</a></td>
-  </tr>
-</table>
+## The weekly performance meeting
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-salesforce-marketing-cloud-intelligence">Instead of Salesforce Marketing Cloud Intelligence</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
-
----
-
-## What is this
-
-Marketing Performance for Claude Code does the job you pay Salesforce Marketing Cloud Intelligence for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Salesforce Marketing Cloud Intelligence dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Salesforce Marketing Cloud Intelligence per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=salesforce-marketing-cloud-intelligence).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
+Five rituals: reconcile the latest results, review spend pacing, inspect cost per acquisition, assign exceptions, and prepare the evidence pack. The fictional Harbour Outdoor and Coastal Supply demo includes overspend, stale social results, missing ownership and an unsupported claim. NZD and AUD never form a combined money total.
 
 ## Quick start
 
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or later. These commands run on Windows and Linux:
 
 ```bash
 git clone https://github.com/Enterprise-DNA-OS/marketing-performance-for-claude-code.git
 cd marketing-performance-for-claude-code
 npm install
 npm run demo
+npm test
+node scripts/performance.mjs weekly-review
+npm run view
+npm run docs
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Open this folder in Claude Code, Codex, OpenCode or Cursor. Every runtime uses the same commands and database. There are 32 CLI commands including help, and 33 recurring slash recipes including /customise and /new-view.
 
-### Use it with your own Postgres or Supabase
+PGlite stores the demo in .data/db. DATABASE_URL selects Postgres 15 or later with verified TLS. Use a fresh DATA_DIR and migrate without seed for real records. Do not mix demonstration and business records. Embedded mode is single-process. A shared installation requires authenticated operators, restricted database roles and backups. Actor names record attribution, not authenticated identities.
 
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
+## What it calculates
 
-## The commands
+The supplied [CLI](docs/cli.md) reports cumulative campaign results through today. Cost per acquisition is spend divided by reported conversions. Return on ad spend is reported revenue divided by spend. Zero denominators return unknown, never zero. Pacing compares spend with a straight-line flight budget. Remaining daily budget spreads the remaining amount over days after today, and becomes unknown when the flight ends. Negative remaining budget means overspend. No currency conversion occurs.
 
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
+Reported conversions can overlap across channels. Revenue is supplied by the exported report, not reconciled to accounting. No identity stitching, attribution model or causal lift is inferred. An imported campaign starts with no owner and a zero budget; assign it and set its actual flight dates and budget before relying on pacing. Source exports determine completeness. A repeat import replaces matching campaign-day values and retains their previous values in append-only activity history. A missing row is not deleted.
 
-| Command | What it does |
-|---|---|
-| `/...` | ... |
+## Ten questions beyond a fixed report
 
-## Instead of salesforce-marketing-cloud-intelligence
+Salesforce already offers dashboards and attribution. These are queries shipped here, not a claim that Salesforce cannot answer them.
 
-<!-- TODO(author): how to bring data across from Salesforce Marketing Cloud Intelligence; link docs/replace-salesforce-marketing-cloud-intelligence.md -->
+1. Which campaign is over budget and has no owner? attention
+2. Where are we spending without a recorded conversion? zero-return
+3. Which campaign has stopped reporting during its flight? stale-feeds
+4. Which campaign exceeds its own acquisition-cost target? efficiency
+5. How much can each campaign spend per remaining day? pacing
+6. What return is reported by channel without mixing currencies? channel-summary
+7. Which claim has no evidence or an overdue review? compliance
+8. What did a corrected daily result replace? campaign
+9. Which report supplied the imported results? imports
+10. Which records need a purpose and retention review? compliance
 
-## Architecture
+## Your first hour: ten things to ask for
 
-```
-marketing-performance-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
-```
+1. Put our name, logo and colours on the performance pack.
+2. Show the campaigns that need an owner.
+3. Review what has overspent its budget.
+4. Check an export without saving it.
+5. Import it into a fresh workspace.
+6. Set the campaign flight dates and budgets.
+7. Compare spend and conversions with the source report.
+8. Draft the weekly review for the owner.
+9. Add our agreed target with /customise.
+10. Add a channel review with /new-view.
 
-## Built for coding agents
+## Paperwork and views
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+brand.json controls the business name, logo and colours. npm run docs creates performance packs, claim evidence records and purpose/retention reviews. npm run view creates the weekly performance desk and evidence review as read-only HTML. Drafts remain in drafts/. [Record checks](docs/compliance.md) distinguish legal context from internal policies. [Why no front end](docs/why-no-front-end.md) describes the screen, mobile and connector boundaries.
 
-## Contributing
+## Move from Salesforce Marketing Cloud Intelligence
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+[The replacement guide](docs/replace-salesforce-marketing-cloud-intelligence.md) defines the campaign-day CSV report, supported fields, dry run, repeat imports and reconciliation. This imports aggregate results, not an entire Salesforce account. Connector configurations, custom calculations, dashboards and attribution models require separate migration work. The free base is a performance desk. Enterprise DNA scopes any additional connections or screens for your version.
 
-## Want it installed and run for you?
+## Verification
 
-Enterprise DNA installs Marketing Performance for Claude Code for your business, migrates your Salesforce Marketing Cloud Intelligence data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+npm test uses an isolated temporary database, exercises all CLI commands and verifies calculations, currencies, corrections, import rollback, history, documents and exports. CI runs Windows, Linux and Postgres. See [research](docs/research.md) for selection evidence and limitations.
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=salesforce-marketing-cloud-intelligence)
-- Read more: [enterprisedna.co/omni/instead-of/salesforce-marketing-cloud-intelligence](https://enterprisedna.co/omni/instead-of/salesforce-marketing-cloud-intelligence?utm_source=github&utm_medium=readme&utm_campaign=salesforce-marketing-cloud-intelligence)
+MIT licence. Not affiliated with Salesforce or Anthropic. Hosting and agent usage have separate costs. [Book 30 minutes with Sam](https://enterprisedna.co/omni/book/?offer=replace-software&utm_campaign=salesforce-marketing-cloud-intelligence&utm_source=github&utm_medium=readme).
 
-## License
-
-MIT. Copyright (c) 2026 Enterprise DNA.

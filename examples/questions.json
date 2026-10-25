@@ -1,0 +1,42 @@
+[
+  [
+    "Which campaign is over budget and has no owner?",
+    "attention"
+  ],
+  [
+    "Where are we spending without a recorded conversion?",
+    "zero-return"
+  ],
+  [
+    "Which campaign has stopped reporting during its flight?",
+    "stale-feeds"
+  ],
+  [
+    "Which campaign exceeds its own acquisition-cost target?",
+    "efficiency"
+  ],
+  [
+    "How much can each campaign spend per remaining day?",
+    "pacing"
+  ],
+  [
+    "What return is reported by channel without mixing currencies?",
+    "channel-summary"
+  ],
+  [
+    "Which claim has no evidence or an overdue review?",
+    "compliance"
+  ],
+  [
+    "What did a corrected daily result replace?",
+    "campaign"
+  ],
+  [
+    "Which report supplied the imported results?",
+    "imports"
+  ],
+  [
+    "Which records need a purpose and retention review?",
+    "compliance"
+  ]
+]

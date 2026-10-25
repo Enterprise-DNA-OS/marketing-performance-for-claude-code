@@ -1,11 +1,45 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
+    "name": "performance-pack",
+    "title": "Campaign performance pack",
+    "for_each": "select id,name from workspaces order by name",
     "file": "name",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Results",
+        "note": "Platform-reported attribution, not audited revenue or unique customers. Do not add currencies.",
+        "sql": "select campaign,currency,spend,conversions,revenue,cpa,roas,latest_day from campaign_performance where workspace_id=$1 order by campaign"
+      },
+      {
+        "title": "Pacing",
+        "note": "Linear budget profile. Adjust flight dates and budget before using an imported campaign.",
+        "sql": "select campaign,currency,budget,expected_spend,spend,pace_variance,remaining from campaign_pacing where workspace_id=$1 order by campaign"
+      }
+    ]
+  },
+  {
+    "name": "claim-evidence",
+    "title": "Claim evidence record",
+    "for_each": "select id,statement as name from claims order by created_at",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Evidence requiring human review",
+        "sql": "select statement,evidence,review_due,reviewed_by from claims where id=$1"
+      }
+    ]
+  },
+  {
+    "name": "data-review",
+    "title": "Data purpose and retention review",
+    "for_each": "select id,name from workspaces order by name",
+    "file": "name",
+    "sections": [
+      {
+        "title": "Recorded review",
+        "note": "The review date is an internal reminder, not a statutory retention period.",
+        "sql": "select name,currency,owner,purpose,review_due from workspaces where id=$1"
+      }
     ]
   }
 ]
